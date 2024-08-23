@@ -16,7 +16,6 @@ export class EditExpensePage extends React.Component {
   }
   render(){
     <div>
-    <p>lidia</p>
       <ExpenseForm
         onSubmit={this.onSubmit}
         expense={this.props.expense}
