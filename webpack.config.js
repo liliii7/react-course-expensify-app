@@ -1,41 +1,41 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const webpack = require('webpack');
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === 'production';
+  const isProduction = argv.mode === "production";
   const CSSExtract = new MiniCssExtractPlugin({
-    filename: 'styles.css',
+    filename: "styles.css",
   });
 
   return {
-    entry: './src/app.js',
+    mode: isProduction ? 'production' : 'development',
+    entry: "./src/app.js",
     output: {
-      path: path.join(__dirname, 'public'),
-      filename: 'bundle.js',
+      path: path.join(__dirname, "public", "dist"),
+      filename: "bundle.js",
+      publicPath: "/dist/",
     },
     module: {
       rules: [
         {
           test: /\.js$/,
-          loader: 'babel-loader',
+          loader: "babel-loader",
           exclude: /node_modules/,
         },
         {
           test: /\.s?css$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
-            'sass-loader',
-          ],
+          use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         },
       ],
     },
     plugins: [
       CSSExtract,
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
+        "process.env.NODE_ENV": JSON.stringify(
+          isProduction ? "production" : "development"
+        ),
       }),
       ...(isProduction
         ? [
@@ -53,9 +53,9 @@ module.exports = (env, argv) => {
           ]
         : []),
     ],
-    devtool: isProduction ? 'source-map' : 'inline-source-map',
+    devtool: isProduction ? "source-map" : "inline-source-map",
     devServer: {
-      contentBase: path.join(__dirname, 'public'),
+      static: path.join(__dirname, "public"),
       historyApiFallback: true,
     },
   };
