@@ -1,5 +1,5 @@
 const path = require("path");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -34,11 +34,11 @@ module.exports = (env, argv) => {
                 sourceMap: true
               }
             },{
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true
-            }}
-            ]
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true
+              }
+            }]
           })
         }]
     },
@@ -47,22 +47,27 @@ module.exports = (env, argv) => {
       contentBase: path.join(__dirname, "public"),
       historyApiFallback: true
     },
+    optimization: {
+      minimize: isProduction,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+            },
+            output: {
+              comments: false,
+            },
+          },
+          sourceMap: true,
+        }),
+      ],
+    },
     plugins: [
       CSSExtract,
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
       }),
-      ...(isProduction ? [new UglifyJsPlugin({
-        uglifyOptions: {
-          compress: {
-            drop_console: true,
-          },
-          output: {
-            comments: false,
-          },
-        },
-        sourceMap: true,
-      })] : []),
     ],
   }
 }
