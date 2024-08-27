@@ -61,7 +61,9 @@ module.exports = (env, argv) => {
             comments: false,
           },
         },
+        exclude: /react-router-dom/,
         sourceMap: true,
+
       })] : []),
     ],
   }
