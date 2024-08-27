@@ -11,8 +11,8 @@ exports[`should render ExpenseListItems 1`] = `
   </[object Object]>
   <p>
     925
-     - 
-    0
+    -
+    Dec 31st, 1969
   </p>
 </div>
 `;

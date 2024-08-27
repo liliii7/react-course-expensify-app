@@ -6,26 +6,26 @@ exports[`should render Header correctly 1`] = `
     Expensify
   </h3>
   <[object Object]
-    activeClassName="is-active"
-    exact={true}
+    activeclassname="is-active"
+    exact="true"
     to="/"
   >
     home
   </[object Object]>
   <[object Object]
-    activeClassName="is-active"
+    activeclassname="is-active"
     to="/create"
   >
     create
   </[object Object]>
   <[object Object]
-    activeClassName="is-active"
+    activeclassname="is-active"
     to="/edit"
   >
     edit
   </[object Object]>
   <[object Object]
-    activeClassName="is-active"
+    activeclassname="is-active"
     to="/help"
   >
     help
