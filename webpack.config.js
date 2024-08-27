@@ -52,6 +52,10 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
       }),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /react-router-dom/,
+        contextRegExp: /node_modules/
+      }),
       ...(isProduction ? [new UglifyJsPlugin({
         uglifyOptions: {
           compress: {
@@ -61,7 +65,6 @@ module.exports = (env, argv) => {
             comments: false,
           },
         },
-        exclude: /react-router-dom/,
         sourceMap: true,
 
       })] : []),
