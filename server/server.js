@@ -9,6 +9,6 @@ const port = process.env.PORT || 3000;
     res.sendFile(path.join(publicPath, 'index.html'));
  })
 
- app.listen(3000, () => {
+ app.listen(port, () => {
     console.log('server is running')
  })
