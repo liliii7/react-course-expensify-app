@@ -1,6 +1,6 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = (env) => {
   const isProduction = env === 'production';
@@ -38,22 +38,17 @@ module.exports = (env) => {
       }]
     },
     plugins: [
-      CSSExtract
-    ],
-    optimization: {
-      minimize: isProduction,
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            ecma: 5,
-            compress: {
-              drop_console: true,
-            },
+      CSSExtract,
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          ecma: 5,
+          compress: {
+            drop_console: true,
           },
-          extractComments: false,
-        }),
-      ],
-    },
+        },
+      })
+    ],
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     devServer: {
       contentBase: path.join(__dirname, 'public'),
