@@ -1,11 +1,13 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
-  const CSSExtract = new ExtractTextPlugin('styles.css');
+  const CSSExtract = new MiniCssExtractPlugin({
+    filename: 'styles.css',
+  });
 
   return {
     entry: './src/app.js',
@@ -22,22 +24,11 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.s?css$/,
-          use: CSSExtract.extract({
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  sourceMap: true,
-                },
-              },
-              {
-                loader: 'sass-loader',
-                options: {
-                  sourceMap: true,
-                },
-              },
-            ],
-          }),
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader',
+          ],
         },
       ],
     },
@@ -48,8 +39,8 @@ module.exports = (env, argv) => {
       }),
       ...(isProduction
         ? [
-            new UglifyJsPlugin({
-              uglifyOptions: {
+            new TerserPlugin({
+              terserOptions: {
                 compress: {
                   drop_console: true,
                 },
@@ -57,7 +48,7 @@ module.exports = (env, argv) => {
                   comments: false,
                 },
               },
-              sourceMap: true,
+              extractComments: false,
             }),
           ]
         : []),
@@ -66,9 +57,6 @@ module.exports = (env, argv) => {
     devServer: {
       contentBase: path.join(__dirname, 'public'),
       historyApiFallback: true,
-    },
-    externals: {
-      'react-router-dom': 'commonjs react-router-dom',
     },
   };
 };
