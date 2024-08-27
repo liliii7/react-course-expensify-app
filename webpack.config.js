@@ -59,7 +59,7 @@ module.exports = (env, argv) => {
               comments: false,
             },
           },
-          sourceMap: true,
+          extractComments: false, 
         }),
       ],
     },
