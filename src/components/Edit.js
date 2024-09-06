@@ -10,26 +10,33 @@ const EditExpensePage = (props) => {
 
   const onSubmit = (expense) => {
     props.editExpense(id, expense);
-    navigate('/');
+    navigate("/");
   };
 
   const onRemove = () => {
     props.startRemoveExpense({ id });
-    navigate('/');
+    navigate("/dashboard");
   };
 
   const expense = props.expenses.find((expense) => expense.id === id);
 
   return (
     <div>
-      <ExpenseForm onSubmit={onSubmit} expense={expense} />
-      <button onClick={onRemove}>Remove</button>
+      <div className="page-header">
+        <div className="content-container">
+          <h1 className="page-header__title">Edit Expense</h1>
+        </div>
+      </div>  
+        <div className="content-container">
+          <ExpenseForm onSubmit={onSubmit} expense={expense} />
+          <button className="button button-secondary" onClick={onRemove}>Remove Expense</button>
+        </div>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  expenses: state.expenses
+  expenses: state.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
